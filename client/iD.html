@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=false">
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="waitless.css">
+    <!-- <link rel="stylesheet" href="waitless.css"> -->
 </head>
 
 <body>
@@ -96,18 +96,19 @@
 
 <template name="home">
 <!-- DASHBOARD -->
-<div class="dashboard_wrapper wrapper">
-  <div class="goto-profile profile_header">
+<div class="container">
+  <div class="row" align="center">
+    <h1>iD</h1>
     <div class=" profile_pic">
-      <img src='{{profile_pic}}'>
+      <img src='{{profile_pic}}' class="img-rounded img-responsive">
     </div>
   </div>
-  <div class="container">
-    <p>{{ hometown }}</p>
-    <p class="get_city">
-      Get city data!
-    </p>
-    <div class="city_chart"></div>
+  <div class="row">
+    <div class="col-xs-3">
+      <p>{{ hometown }}</p>
+      <button type="button" class="btn btn-primary get_city">Get City Data!</button>
+    </div>
+    <div class="city_chart col-xs-9"></div>
   </div>
 </div><!-- end dashboard_wrapper -->
 </template>
