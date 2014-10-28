@@ -1,10 +1,13 @@
 ////////// Shared code (client and server) //////////
 
-Stores = new Meteor.Collection('stores');
-Products = new Meteor.Collection('products');
-// Users = new Meteor.Collection('users');
-Orders = new Meteor.Collection('orders');
-Order_Times = new Meteor.Collection('order_times');
+// Stores = new Meteor.Collection('stores');
+// Products = new Meteor.Collection('products');
+// // Users = new Meteor.Collection('users');
+// Orders = new Meteor.Collection('orders');
+// Order_Times = new Meteor.Collection('order_times');
+
+Cities = new Meteor.Collection('cities');
+Crime = new Meteor.Collection('crime');
 
 if (Meteor.isClient) {
   Template.stores.helpers({
@@ -32,40 +35,6 @@ if (Meteor.isClient) {
     }
   })
 
-  // Template.users.helpers({
-  //   users: function() {
-  //     return Users.find();
-  //   },
-  //   findUserOrders: function(user) {
-  //     var orders = Orders.find({user_id: user});
-  //     return orders;
-  //   }
-  // })
-
-  // Template.orders.helpers({
-  //   orders: function(p) {
-  //     return Orders.find();
-  //   }, 
-  //   dateFormat: function(date) {
-  //     return new Date(date);
-  //   },
-  //   findStore: function(store_id) {
-  //     var store = Stores.findOne(store_id);
-  //     return store.name + ' - ' + store.location;
-  //   }, // the name and location of the store
-  //   findUserName: function(user_id) {
-  //     var user = Users.findOne(user_id);
-  //     if (user) {
-  //       return user.name;
-  //     }
-  //   },
-  //   getItem: function(item_array) {
-  //     var product = Products.findOne(item_array[0]);
-  //     if (product) {
-  //       return item_array[1] + ' : ' + product.item + ' - ' + product.size
-  //     }
-  //   }
-  // })
 
 }
 

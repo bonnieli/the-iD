@@ -1,0 +1,114 @@
+<head>
+  <title>iD</title>
+    <meta name="author" content="Bonnie Li, Joshua Kho & Peter Vuong">
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=false">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="waitless.css">
+</head>
+
+<body>
+  {{#if currentUser}}
+    {{> loggedIn}}
+  {{else}}
+    {{> loggedOut}}
+  {{/if}}
+</body>
+
+<template name="loggedOut">
+  {{#if partial 'storeLogin'}}
+  	{{> storeLogin}}
+  {{else}} {{#if partial 'storeView'}}
+  	{{> storeView}}
+  {{else}} 
+    {{> login_state}}
+  {{/if}} {{/if}}
+</template>
+
+<template name="login_state">
+  <div class="login_wrapper wrapper">
+    <div class="login_logo">
+      <img id="logo_graphic" alt="waitless" src="img/logo.gif">
+      <img id="logo_title" src="img/login/logo_title.png">
+      <h3>why wait when you can order online!</h3>
+    </div><!-- end login_logo -->
+    <div class="login_input">
+      <a id="login_user">Get Quote? {{> loginButtons}}</a>
+      <!-- <a class="goto-store-login" id="login_store">you brew coffee</a> -->
+    </div><!-- end  login_input-->
+    <p id="copyright">iD is the prototype for a competition</p>
+  </div><!-- end login_wrapper -->
+</template>
+
+<template name="storeLogin">
+  <div class="login_wrapper wrapper">
+    <a class="goto-home back">back</a>
+    <div class="login_logo">
+      <img id="logo_graphic" alt="waitless" src="img/logo.gif">
+      <img id="logo_title" src="img/login/logo_title.png">
+      <h3>you are a store - login</h3>
+    </div><!-- end login_logo -->
+    <div class="login_input">
+      <input id="store_username" type="text" placeholder="username">
+      <input type="password" placeholder="password">
+      <input type="submit" class="goto-store-view" value="login">
+    </div><!-- end  login_input-->
+    <p id="copyright">waitless is made by nicole, bonnie, joe & constance</p>
+  </div><!-- end login_wrapper -->
+</template>
+
+<template name="storeView">
+  <!-- brewlist (store view) -->
+  <div class="brewlist_wrapper wrapper" style="display:block">
+    <a class="back goto-home">back</a>
+    <div class="profile_header">
+      <div class="profile_pic">
+        {{> profile_pic}}
+      </div>
+      <p>Let's get brewing started!</p>
+    </div>
+    <img class="dash" src="/img/dash_coming.png">
+    <ul id="brewlist">
+			{{#each orders}}
+				<li>
+					<img class="brew_cell" src="/img/mono_coffee_cup.png">
+					<p class="brew_cell" >{{itemName this}}</p>
+					<p class="brew_cell" >{{username this}}</p>
+					<p class="brew_cell" >{{pickupTime this}}</p>
+				</li>
+			{{/each}}
+    </ul><!-- end brewlist -->
+
+    <a class="brew_complete">brew complete</a>
+  </div><!-- end upcoming_order_wrapper -->
+</template>
+
+<template name="loggedIn">
+  {{#if partial 'home'}}
+  	{{> home}}
+  {{else}} {{#if partial 'profile'}}
+  	{{> profile}}
+  {{else}} {{#if partial 'createOrder'}}
+  	{{> createOrder}}
+  {{/if}} {{/if}} {{/if}}
+</template>
+
+<template name="home">
+<!-- DASHBOARD -->
+<div class="dashboard_wrapper wrapper">
+  <div class="goto-profile profile_header">
+    <div class=" profile_pic">
+      <img src='{{profile_pic}}'>
+    </div>
+  </div>
+  <div class="container">
+    <p>{{ hometown }}</p>
+    <p class="get_city">
+      Get city data!
+    </p>
+    <div class="city_chart"></div>
+  </div>
+</div><!-- end dashboard_wrapper -->
+</template>
+

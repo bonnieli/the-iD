@@ -45,52 +45,9 @@ Template.storeLogin.events({
 	}
 });
 
-// # storeView
-// _______________
-
-Template.storeView.events({
-	'click .goto-home': function() {
-		router.home();
-	}
-});
-
-Template.storeView.orders = function() {
-	var store = Session.get('loggedInStore');
-	return Orders.find({
-		store_id: store._id
-	});
-};
-
-Template.storeView.username = function(order) {
-	if (order.user_id === "FAKEUSER") {
-		return "Joe Mercer";
-	}
-	return Meter.users.findOne({
-		_id: order.user_id
-	}).profile.name;
-};
-
-Template.storeView.itemName = function(order) {
-	var item_id = order.items[0].product;
-	if (!item_id) return;
-
-	var product = Products.findOne({
-		_id: item_id
-	});
-
-	if (!product) return;
-
-	return order.items[0].size + ' ' + product.item;
-};
-
-Template.storeView.pickupTime = function(order) {
-	var time = new Date(order.time_of_pickup);
-	return time.getHours() + ':' + time.getMinutes();
-};
 
 // # Logged In
 // ===========
-
 Template.loggedIn.helpers({
 	partial: function(partialName) {
 		return Session.get('partial') === partialName;
@@ -99,111 +56,45 @@ Template.loggedIn.helpers({
 
 // # Home
 // ______
-
 Template.home.events({
-	'click .goto-create-order': function() {
-		router.createOrderView();
-	},
-	'click .goto-profile': function() {
-		router.profileView();
-	}
-});
-
-// # Profile
-// _________
-
-Template.profile.events({
-	'click .goto-home': function() {
-		router.home();
-	}
-});
-
-// # Place Order
-// _____________
-
-Session.set('activeStore', null);
-
-Template.createOrder.events({
-	'click .goto-home': function() {
-		router.home();
-	}
-});
-
-// # products
-// __________
-
-Template.products.products = function() {
-	var storeId = Session.get('activeStore');
-	if (!storeId) return;
-	return Products.find({store_id: storeId});
-};
-
-// # sizes
-// _______
-
-Template.sizes.sizes = function() {
-	var prod_id = Session.get("product").product_id;
-	if (!prod_id) return;
-	var product = Products.findOne({
-		_id: prod_id
-	});
-	if (!product) return;
-	return product.sizes;
-};
-
-// # times
-// _______
-
-Template.times.times = function() {
-	var minutes = 0;
-	var time_now = new Date();
-	var minutes_now = (time_now.getHours() * 60) + time_now.getMinutes() + minutes;
-	var closest_time = 5 * Math.round(minutes_now/5);
-	var available_times = Order_Times.find({numMinutes: {$gt : closest_time}}, {limit: 5})
-	return available_times;
-};
-
-// # confirmation
-Template.confirmation.confirmation = function() {
-	var order = Session.get("order");
-	var store = Stores.findOne(order.store_id);
-	if (store) {
-		if (order.items) {
-			var item = Products.findOne(order.items[0].product);
-			if (order.time_of_pickup) {
-				return 'You ordered a ' + order.items[0].size + ' ' + item.item + ' from ' + store.location + ' and it will be available at ' + order.time_of_pickup;
-			}
-			return store.name + ' - ' + store.location + ' : ' + order.items[0].size + ' ' + item.item;
+	'click .get_city': function() {
+		var hometown = Meteor.user().services.facebook.hometown.name;
+		if (hometown) {
+			hometown = hometown.split(",")[0];
 		}
-		return store.name + ' - ' + store.location;
+		var data = Crime.findOne({city: hometown}).severity_index;
+		var categories = [];
+		var points = [];
+		$.each(data, function(k, v) {
+			categories.push(k);
+			points.push(v);
+		});
+		$(".city_chart").highcharts({
+			chart: {
+				type: 'area'
+			}, title: {
+				text: 'Severity Index'
+			}, xAxis: {
+				categories: categories
+			},
+			series: [{
+				name: hometown,
+				data: points
+			}]
+		});
 	}
-}
+});
 
-// # notifications
-Template.notifications.notifications = function() {
-	var user = Meteor.user()._id;
-	var orders = Orders.find({user_id: user});
-	return orders;
-}
 
-Template.notifications.store_info = function(s) {
-	var store = Stores.findOne(s);
-	if (store) {
-		return store.name + ' - ' + store.location;
+Template.home.helpers({
+	profile_pic: function() {
+		return Meteor.user().profile.picture;
+	},
+	hometown: function() {
+		return Meteor.user().services.facebook.hometown.name;
 	}
-}
+});
 
-Template.notifications.product_info = function(p) {
-	var product = Products.findOne(p[0].product);
-	if (product) {
-		return p[0].size + ' ' + product.item;
-	}
-}
-
-Template.profile_pic.profile_pic = function() {
-	var dp = Meteor.user().profile.picture;
-	return dp;
-}
 
 
 // # Router

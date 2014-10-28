@@ -4,6 +4,7 @@
   font-style: normal;
   font-weight: 400;
 }
+/*
 *,
 html,
 body,
@@ -183,7 +184,7 @@ html {
 img {
   -webkit-touch-callout: none;
 }
-/* COLOR PALETTE*/
+/* COLOR PALETTE
 .absolute {
   position: absolute;
 }
@@ -260,7 +261,10 @@ p {
   -ms-transition: all 0s ease 0s;
   transition: all 0s ease 0s;
 }
+*/
 /* BODY */
+
+/*
 body .back {
   display: block;
   position: absolute;
@@ -909,3 +913,4 @@ body .brewlist_wrapper .brew_complete {
 body .brewlist_wrapper .brew_complete:hover {
   background: rgba(255, 255, 255, 0.09);
 }
+*/

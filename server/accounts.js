@@ -1,12 +1,13 @@
 
 Accounts.onCreateUser(function(options, user) {
-	console.log(options);
-	console.log(user);
+	// console.log(options);
+	// console.log(user);
   if (options.profile) {
     options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture?type=large";
     user.profile = options.profile;
   }
 
+  // This is to get all the additional permission we want
   result = Meteor.http.get("https://graph.facebook.com/me", {
     params: {
       access_token: user.services.facebook.accessToken
