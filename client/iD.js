@@ -23,7 +23,7 @@ Session.set('loggedInStore', null);
 
 Accounts.ui.config({
 	requestPermissions: {
-		facebook: ['email', 'user_hometown', 'user_location'],
+		facebook: ['email', 'user_about_me', 'user_birthday', 'user_hometown', 'user_location', 'user_tagged_places', 'user_work_history', 'user_education_history']
 	}
 });
 

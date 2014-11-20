@@ -29,9 +29,6 @@
 <template name="login_state">
   <div class="login_wrapper wrapper">
     <div class="login_logo">
-      <img id="logo_graphic" alt="waitless" src="img/logo.gif">
-      <img id="logo_title" src="img/login/logo_title.png">
-      <h3>why wait when you can order online!</h3>
     </div><!-- end login_logo -->
     <div class="login_input">
       <a id="login_user">Get Quote? {{> loginButtons}}</a>
@@ -97,6 +94,9 @@
 <template name="home">
 <!-- DASHBOARD -->
 <div class="container">
+  <div class="row">
+    {{> loginButtons}}
+  </div>
   <div class="row" align="center">
     <h1>iD</h1>
     <div class=" profile_pic">

@@ -1,4 +1,4 @@
-
+// Create user accounts, specific to Facebook Logins
 Accounts.onCreateUser(function(options, user) {
 	// console.log(options);
 	// console.log(user);
@@ -7,21 +7,41 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = options.profile;
   }
 
+  function facebook_data(endpoint, access_token) {
+    return Meteor.http.get("https://graph.facebook.com" + endpoint, {
+      params: {
+        access_token: access_token
+      }
+    });
+  }
+
   // This is to get all the additional permission we want
-  result = Meteor.http.get("https://graph.facebook.com/me", {
-    params: {
-      access_token: user.services.facebook.accessToken
-    }
-  });
+  result = facebook_data("/me", user.services.facebook.accessToken);
+  age_range = facebook_data("/me?fields=age_range", user.services.facebook.accessToken);
+
   if (result.error)
     throw result.error;
-  user.services.facebook.hometown = result.data.hometown;
-  user.services.facebook.location = result.data.location;
+
+  // console.log(result);
+
+  // DATA WE WANT TO STORE
+  facebook = user.services.facebook;
+  result = result.data;
+  facebook.hometown = result.hometown;
+  facebook.location = result.location;
+  facebook.birthday = result.birthday;
+  facebook.education = result.education;
+  facebook.work = result.work;
+  facebook.gender = result.gender;
+  facebook.updated_time = result.updated_time; // Last time user updated their Facebook Profile
+
+  facebook.age_range = age_range.data.age_range;
 
   return user;
 });
 
 
+// FACEBOOK CONFIGURATIONS
 ServiceConfiguration.configurations.remove({
   service: "facebook"
 });
@@ -31,9 +51,12 @@ ServiceConfiguration.configurations.insert({
   secret: "a8b54ac1cfa42ec80b9200688ac24bb5"
 });
 
-// Meteor.loginWithFacebook({
-//   // requestPermissions: ['user']
-// }, function (err) {
-//   if (err)
-//     Session.set('errorMessage', err.reason || 'Unknown error');
-// });
+// TWITTER CONFIGURATIONS
+ServiceConfiguration.configurations.remove({
+  service: "twitter"
+});
+ServiceConfiguration.configurations.insert({
+  service: "twitter",
+  consumerKey: "y4Dkp6MYDxp8QsGgaPL6x51Zb",
+  secret: "VN7yqvkUhsWC2hmmnnHJQmM2e1IAoBOLkGA68qMcyj1vNi5FkW"
+});
